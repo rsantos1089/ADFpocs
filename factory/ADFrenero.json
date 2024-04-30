@@ -1,0 +1,9 @@
+{
+	"name": "ADFrenero",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "850b13ba-293b-4e7d-b35b-8336efb30334",
+		"tenantId": "c4a66c34-2bb7-451f-8be1-b2c26a430158"
+	}
+}
