@@ -1,0 +1,7 @@
+{
+	"name": "pipelineUberTrips",
+	"properties": {
+		"concurrency": 1,
+		"annotations": []
+	}
+}
