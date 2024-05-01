@@ -13,7 +13,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "addDatesColumns"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          {Trip ID} as string,",
@@ -38,7 +42,9 @@
 				"     ),",
 				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> uberTrips"
+				"     ignoreNoFilesFound: false) ~> uberTrips",
+				"uberTrips derive(dateProcess = toDate({Pick Up Datetime},'yyyy-MM-dd'),",
+				"          dateExecution = currentDate()) ~> addDatesColumns"
 			]
 		}
 	}
