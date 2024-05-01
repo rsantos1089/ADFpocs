@@ -12,7 +12,15 @@
 					"name": "uberTrips"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "writeUberFormat",
+						"type": "DatasetReference"
+					},
+					"name": "writeCsvFiles"
+				}
+			],
 			"transformations": [
 				{
 					"name": "addDatesColumns"
@@ -44,7 +52,38 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> uberTrips",
 				"uberTrips derive(dateProcess = toDate({Pick Up Datetime},'yyyy-MM-dd'),",
-				"          dateExecution = currentDate()) ~> addDatesColumns"
+				"          dateExecution = currentDate(),",
+				"          filename = concat('proyecto_',toString(toDate({Pick Up Datetime},'yyyy-MM-dd')))) ~> addDatesColumns",
+				"addDatesColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     rowUrlColumn:'filename',",
+				"     truncate: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          {Trip ID},",
+				"          {Pick Up Datetime},",
+				"          {Drop Off Datetime},",
+				"          {Pick Up Lat},",
+				"          {Pick Up Lon},",
+				"          {Drop Off Lat},",
+				"          {Drop Off Lon},",
+				"          {Crow Fly Distance},",
+				"          {Drive Time},",
+				"          {Drive Distance Km},",
+				"          {Uber Fare},",
+				"          {Pickup Suburb},",
+				"          {Pickup State},",
+				"          {Pickup Country},",
+				"          {Pickup Postal Code},",
+				"          {Drop Off Address},",
+				"          {Drop Off Suburb},",
+				"          {Drop Off Country},",
+				"          {Drop Off Postal Code},",
+				"          dateProcess,",
+				"          dateExecution,",
+				"          filename",
+				"     )) ~> writeCsvFiles"
 			]
 		}
 	}
