@@ -1,0 +1,346 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfreneros"
+		},
+		"AzureBlobStorageLinked_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorageLinked'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorageLinked')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorageLinked_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataUberTrips')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageLinked",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "uber_trips_sydney_dataset.csv",
+						"container": "kaggle"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Trip ID",
+						"type": "String"
+					},
+					{
+						"name": "Pick Up Datetime",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Datetime",
+						"type": "String"
+					},
+					{
+						"name": "Pick Up Lat",
+						"type": "String"
+					},
+					{
+						"name": "Pick Up Lon",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Lat",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Lon",
+						"type": "String"
+					},
+					{
+						"name": "Crow Fly Distance",
+						"type": "String"
+					},
+					{
+						"name": "Drive Time",
+						"type": "String"
+					},
+					{
+						"name": "Drive Distance Km",
+						"type": "String"
+					},
+					{
+						"name": "Uber Fare",
+						"type": "String"
+					},
+					{
+						"name": "Pickup Suburb",
+						"type": "String"
+					},
+					{
+						"name": "Pickup State",
+						"type": "String"
+					},
+					{
+						"name": "Pickup Country",
+						"type": "String"
+					},
+					{
+						"name": "Pickup Postal Code",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Address",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Suburb",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Country",
+						"type": "String"
+					},
+					{
+						"name": "Drop Off Postal Code",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLinked')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/writeUberFormat')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorageLinked",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "datalake"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorageLinked')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflowUber')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "dataUberTrips",
+								"type": "DatasetReference"
+							},
+							"name": "uberTrips"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "writeUberFormat",
+								"type": "DatasetReference"
+							},
+							"name": "writeCsvFiles"
+						}
+					],
+					"transformations": [
+						{
+							"name": "addDatesColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {Trip ID} as string,",
+						"          {Pick Up Datetime} as string,",
+						"          {Drop Off Datetime} as string,",
+						"          {Pick Up Lat} as string,",
+						"          {Pick Up Lon} as string,",
+						"          {Drop Off Lat} as string,",
+						"          {Drop Off Lon} as string,",
+						"          {Crow Fly Distance} as string,",
+						"          {Drive Time} as string,",
+						"          {Drive Distance Km} as string,",
+						"          {Uber Fare} as string,",
+						"          {Pickup Suburb} as string,",
+						"          {Pickup State} as string,",
+						"          {Pickup Country} as string,",
+						"          {Pickup Postal Code} as string,",
+						"          {Drop Off Address} as string,",
+						"          {Drop Off Suburb} as string,",
+						"          {Drop Off Country} as string,",
+						"          {Drop Off Postal Code} as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> uberTrips",
+						"uberTrips derive(dateProcess = toDate({Pick Up Datetime},'yyyy-MM-dd'),",
+						"          dateExecution = currentDate(),",
+						"          filename = concat('proyecto_',toString(toDate({Pick Up Datetime},'yyyy-MM-dd')))) ~> addDatesColumns",
+						"addDatesColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     rowUrlColumn:'filename',",
+						"     truncate: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          {Trip ID},",
+						"          {Pick Up Datetime},",
+						"          {Drop Off Datetime},",
+						"          {Pick Up Lat},",
+						"          {Pick Up Lon},",
+						"          {Drop Off Lat},",
+						"          {Drop Off Lon},",
+						"          {Crow Fly Distance},",
+						"          {Drive Time},",
+						"          {Drive Distance Km},",
+						"          {Uber Fare},",
+						"          {Pickup Suburb},",
+						"          {Pickup State},",
+						"          {Pickup Country},",
+						"          {Pickup Postal Code},",
+						"          {Drop Off Address},",
+						"          {Drop Off Suburb},",
+						"          {Drop Off Country},",
+						"          {Drop Off Postal Code},",
+						"          dateProcess,",
+						"          dateExecution,",
+						"          filename",
+						"     )) ~> writeCsvFiles"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/dataUberTrips')]",
+				"[concat(variables('factoryId'), '/datasets/writeUberFormat')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipelineUberTrips')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DFuberTrips",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflowUber",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"uberTrips": {},
+									"writeCsvFiles": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflowUber')]"
+			]
+		}
+	]
+}
