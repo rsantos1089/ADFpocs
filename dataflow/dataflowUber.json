@@ -57,7 +57,6 @@
 				"addDatesColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     rowUrlColumn:'filename',",
-				"     truncate: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -81,8 +80,7 @@
 				"          {Drop Off Country},",
 				"          {Drop Off Postal Code},",
 				"          dateProcess,",
-				"          dateExecution = dateLoad,",
-				"          filename",
+				"          dateLoad",
 				"     )) ~> writeCsvFiles"
 			]
 		}
