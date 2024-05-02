@@ -52,7 +52,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> uberTrips",
 				"uberTrips derive(dateProcess = toDate({Pick Up Datetime},'yyyy-MM-dd'),",
-				"          dateExecution = currentDate(),",
+				"          dateLoad = currentDate(),",
 				"          filename = concat('proyecto_',toString(toDate({Pick Up Datetime},'yyyy-MM-dd')))) ~> addDatesColumns",
 				"addDatesColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -81,7 +81,7 @@
 				"          {Drop Off Country},",
 				"          {Drop Off Postal Code},",
 				"          dateProcess,",
-				"          dateExecution,",
+				"          dateExecution = dateLoad,",
 				"          filename",
 				"     )) ~> writeCsvFiles"
 			]
