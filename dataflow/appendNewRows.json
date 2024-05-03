@@ -19,7 +19,15 @@
 					"name": "sourceHistory"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "sourceHistory",
+						"type": "DatasetReference"
+					},
+					"name": "writeAppend"
+				}
+			],
 			"transformations": [
 				{
 					"name": "exists1"
@@ -34,7 +42,11 @@
 				"     ignoreNoFilesFound: false) ~> sourceHistory",
 				"sourceHistory, sourceStaging exists({TripID} == {TripID},",
 				"     negate:true,",
-				"     broadcast: 'auto')~> exists1"
+				"     broadcast: 'auto')~> exists1",
+				"exists1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> writeAppend"
 			]
 		}
 	}
