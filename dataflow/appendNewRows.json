@@ -21,12 +21,19 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "sourceHistory",
+						"type": "DatasetReference"
+					},
 					"name": "writeAppendRows"
 				}
 			],
 			"transformations": [
 				{
 					"name": "exists1"
+				},
+				{
+					"name": "appendRows"
 				}
 			],
 			"scriptLines": [
@@ -85,8 +92,32 @@
 				"sourceHistory, sourceStaging exists(sourceHistory@{Trip ID} == sourceStaging@{Trip ID},",
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
-				"exists1 sink(allowSchemaDrift: true,",
+				"exists1, sourceHistory union(byName: true)~> appendRows",
+				"appendRows sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          {Trip ID} as string,",
+				"          {Pick Up Datetime} as string,",
+				"          {Drop Off Datetime} as string,",
+				"          {Pick Up Lat} as string,",
+				"          {Pick Up Lon} as string,",
+				"          {Drop Off Lat} as string,",
+				"          {Drop Off Lon} as string,",
+				"          {Crow Fly Distance} as string,",
+				"          {Drive Time} as string,",
+				"          {Drive Distance Km} as string,",
+				"          {Uber Fare} as string,",
+				"          {Pickup Suburb} as string,",
+				"          {Pickup State} as string,",
+				"          {Pickup Country} as string,",
+				"          {Pickup Postal Code} as string,",
+				"          {Drop Off Address} as string,",
+				"          {Drop Off Suburb} as string,",
+				"          {Drop Off Country} as string,",
+				"          {Drop Off Postal Code} as string,",
+				"          dateProcess as string,",
+				"          dateLoad as string",
+				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> writeAppendRows"
 			]
