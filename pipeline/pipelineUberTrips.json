@@ -257,6 +257,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"command": "cmd c/ \"python load_kaggle_data.py\"",
 					"resourceLinkedService": {
 						"referenceName": "AzureBlobStorageLinked",
 						"type": "LinkedServiceReference"
