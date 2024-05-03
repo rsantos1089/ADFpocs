@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "writeUberFormat",
+						"referenceName": "writeUberFormatStaging",
 						"type": "DatasetReference"
 					},
 					"name": "writeCsvFiles"
@@ -57,6 +57,7 @@
 				"addDatesColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     rowUrlColumn:'filename',",
+				"     truncate: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",

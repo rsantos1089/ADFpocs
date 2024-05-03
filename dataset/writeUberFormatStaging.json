@@ -1,5 +1,5 @@
 {
-	"name": "writeUberFormat",
+	"name": "writeUberFormatStaging",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorageLinked",
