@@ -5,14 +5,7 @@
 			{
 				"name": "DFuberTrips",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "downloadKaggleData",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -252,8 +245,8 @@
 				}
 			},
 			{
-				"name": "downloadKaggleData",
-				"type": "Custom",
+				"name": "Azure Function1",
+				"type": "AzureFunctionActivity",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -262,23 +255,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
-				"typeProperties": {
-					"command": "cmd c/ \"python load_kaggle_data.py\"",
-					"resourceLinkedService": {
-						"referenceName": "AzureBlobStorageLinked",
-						"type": "LinkedServiceReference"
-					},
-					"folderPath": "artifacts",
-					"referenceObjects": {
-						"linkedServices": [],
-						"datasets": []
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AzureBatch1",
-					"type": "LinkedServiceReference"
-				}
+				"userProperties": []
 			}
 		],
 		"concurrency": 1,
