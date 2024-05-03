@@ -1,0 +1,41 @@
+{
+	"name": "appendNewRows",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sourceStaging",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStaging"
+				},
+				{
+					"dataset": {
+						"referenceName": "sourceHistory",
+						"type": "DatasetReference"
+					},
+					"name": "sourceHistory"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "exists1"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceStaging",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceHistory",
+				"sourceHistory, sourceStaging exists({TripID} == {TripID},",
+				"     negate:true,",
+				"     broadcast: 'auto')~> exists1"
+			]
+		}
+	}
+}
