@@ -19,34 +19,18 @@
 					"name": "sourceHistory"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "sourceHistory",
-						"type": "DatasetReference"
-					},
-					"name": "writeAppend"
-				}
-			],
-			"transformations": [
-				{
-					"name": "exists1"
-				}
-			],
+			"sinks": [],
+			"transformations": [],
 			"scriptLines": [
+				"parameters{",
+				"     FileNameProcess as string",
+				"}",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> sourceStaging",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> sourceHistory",
-				"sourceHistory, sourceStaging exists({Trip ID} == {Trip ID},",
-				"     negate:true,",
-				"     broadcast: 'auto')~> exists1",
-				"exists1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> writeAppend"
+				"     ignoreNoFilesFound: false) ~> sourceHistory"
 			]
 		}
 	}
