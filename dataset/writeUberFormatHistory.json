@@ -1,0 +1,22 @@
+{
+	"name": "writeUberFormatHistory",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageLinked",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "datalake"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
