@@ -26,6 +26,91 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "Trip ID",
+				"type": "String"
+			},
+			{
+				"name": "Pick Up Datetime",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Datetime",
+				"type": "String"
+			},
+			{
+				"name": "Pick Up Lat",
+				"type": "String"
+			},
+			{
+				"name": "Pick Up Lon",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Lat",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Lon",
+				"type": "String"
+			},
+			{
+				"name": "Crow Fly Distance",
+				"type": "String"
+			},
+			{
+				"name": "Drive Time",
+				"type": "String"
+			},
+			{
+				"name": "Drive Distance Km",
+				"type": "String"
+			},
+			{
+				"name": "Uber Fare",
+				"type": "String"
+			},
+			{
+				"name": "Pickup Suburb",
+				"type": "String"
+			},
+			{
+				"name": "Pickup State",
+				"type": "String"
+			},
+			{
+				"name": "Pickup Country",
+				"type": "String"
+			},
+			{
+				"name": "Pickup Postal Code",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Address",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Suburb",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Country",
+				"type": "String"
+			},
+			{
+				"name": "Drop Off Postal Code",
+				"type": "String"
+			},
+			{
+				"name": "dateProcess",
+				"type": "String"
+			},
+			{
+				"name": "dateLoad",
+				"type": "String"
+			}
+		]
 	}
 }
