@@ -223,6 +223,22 @@
 												"value": "@item().name",
 												"type": "Expression"
 											}
+										},
+										"writeAppend": {
+											"FileNameHistory": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceParameters": {
+										"sourceHistory": {
+											"schemaLinkedService": {
+												"FileNameHistory": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
 										}
 									}
 								},
