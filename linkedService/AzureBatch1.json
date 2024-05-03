@@ -1,0 +1,20 @@
+{
+	"name": "AzureBatch1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBatch",
+		"typeProperties": {
+			"batchUri": "https://batchreneros2024.eastus.batch.azure.com",
+			"poolName": "custom-python-kaggle",
+			"accountName": "batchreneros2024",
+			"linkedServiceName": {
+				"referenceName": "AzureBlobStorageLinked",
+				"type": "LinkedServiceReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
