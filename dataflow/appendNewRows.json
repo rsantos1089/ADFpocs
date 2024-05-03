@@ -1,0 +1,24 @@
+{
+	"name": "appendNewRows",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sourceHistory",
+						"type": "DatasetReference"
+					},
+					"name": "sourceHistory"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceHistory"
+			]
+		}
+	}
+}
