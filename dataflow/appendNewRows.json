@@ -40,7 +40,7 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> sourceHistory",
-				"sourceHistory, sourceStaging exists({TripID} == {TripID},",
+				"sourceHistory, sourceStaging exists({Trip ID} == {Trip ID},",
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
 				"exists1 sink(allowSchemaDrift: true,",
