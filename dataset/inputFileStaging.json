@@ -1,0 +1,31 @@
+{
+	"name": "inputFileStaging",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageLinked",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileStaging": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().FileStaging",
+					"type": "Expression"
+				},
+				"container": "staging"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
