@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sourceHistory"
+				},
+				{
+					"dataset": {
+						"referenceName": "inputFileStaging",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStaging"
 				}
 			],
 			"sinks": [],
@@ -17,7 +24,10 @@
 			"scriptLines": [
 				"source(allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> sourceHistory"
+				"     ignoreNoFilesFound: false) ~> sourceHistory",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourceStaging"
 			]
 		}
 	}
