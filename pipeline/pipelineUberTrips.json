@@ -225,6 +225,12 @@
 												"value": "@item().name",
 												"type": "Expression"
 											}
+										},
+										"writeAppendRows": {
+											"FileNameHistory": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
 										}
 									}
 								},
