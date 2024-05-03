@@ -261,6 +261,7 @@
 						"referenceName": "AzureBlobStorageLinked",
 						"type": "LinkedServiceReference"
 					},
+					"folderPath": "artifacts",
 					"referenceObjects": {
 						"linkedServices": [],
 						"datasets": []
